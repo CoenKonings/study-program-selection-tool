@@ -8,6 +8,9 @@ class StudyProgram(models.Model):
 
     name = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.name
+
 
 class Question(models.Model):
     """
@@ -17,6 +20,9 @@ class Question(models.Model):
     """
 
     text = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.text
 
 
 class Node(models.Model):
@@ -34,6 +40,13 @@ class Node(models.Model):
         StudyProgram, on_delete=models.SET_NULL, null=True, blank=True
     )
 
+    def __str__(self):
+        s = "Node {}. ".format(self.id)
+        if self.question:
+            return s + "Inner node, question: {}".format(self.question)
+        else:
+            return s + "Leaf, result: {}".format(self.result)
+
 
 class DecisionTree(models.Model):
     """
@@ -42,6 +55,9 @@ class DecisionTree(models.Model):
 
     name = models.CharField(max_length=255)
     root = models.ForeignKey(Node, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return "Decision tree: {}.".format(self.name)
 
 
 class Response(models.Model):
@@ -53,3 +69,8 @@ class Response(models.Model):
     text = models.CharField(max_length=255)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     leads_to = models.ForeignKey(Node, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "{} as response to {}, leading to {}.".format(
+            self.text, self.question, self.leads_to
+        )
