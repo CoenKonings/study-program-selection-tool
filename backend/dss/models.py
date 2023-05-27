@@ -71,6 +71,6 @@ class Response(models.Model):
     leads_to = models.ForeignKey(Node, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "{} as response to {}, leading to {}.".format(
+        return "\"{}\" as response to \"{}\", leading to \"{}\".".format(
             self.text, self.question, self.leads_to
         )
