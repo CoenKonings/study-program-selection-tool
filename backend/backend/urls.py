@@ -21,7 +21,9 @@ from dss import views
 
 
 router = routers.DefaultRouter()
-router.register(r"studyprograms", views.StudyProgramViewSet)
+router.register(r"decision-trees", views.DecisionTreeViewSet)
+router.register(r"study-programs", views.StudyProgramViewSet)
+router.register(r"nodes", views.NodeViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
