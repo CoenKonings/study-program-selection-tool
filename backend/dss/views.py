@@ -25,7 +25,7 @@ class NodeViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = NodeSerializer
     permission_classes = []
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=["get"])
     def responses(self, request, pk=None):
         """
         Action on a Node detail view. Retrieves all possible responses to this

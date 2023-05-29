@@ -29,7 +29,9 @@ class Node(models.Model):
     such should lead to a StudyProgram.
     """
 
-    question = models.ForeignKey(Question, on_delete=models.SET_NULL, null=True, blank=True)
+    question = models.ForeignKey(
+        Question, on_delete=models.SET_NULL, null=True, blank=True
+    )
     result = models.ForeignKey(
         StudyProgram, on_delete=models.SET_NULL, null=True, blank=True
     )
@@ -65,6 +67,6 @@ class Answer(models.Model):
     leads_to = models.ForeignKey(Node, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "\"{}\" as answer to \"{}\", leading to \"{}\".".format(
+        return '"{}" as answer to "{}", leading to "{}".'.format(
             self.text, self.question, self.leads_to
         )
