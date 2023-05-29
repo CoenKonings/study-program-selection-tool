@@ -15,3 +15,12 @@ The frontend of this project is built using Vite and React. To set up, navigate 
 This guide assumes familiarity with both Django and the Django Rest Framework. Most of the work done on this project should be self-explanatory if these frameworks are known.
 
 In the backend folder you will find two more folders, another folder called `backend` (this is the folder that contains `settings.py`, `urls.py`, etc.) and a folder called `dss`. The bulk of the backend of this application is located in the `dss` folder. This folder contains the models for the decision tree and AHP-based decision support systems (located in `models.py`). Here, you will also find the admin forms for these models (`admin.py`), and the serializers (`serializers.py`) used to generate the JSON that will be returned by the views (`views.py`).
+
+### Endpoints
+`/decision-trees/`: Used to retrieve all decision trees.
+`/decision-trees/{id}/`: Used to retrieve a specific decision tree.
+`/study-programs/`: Used to retrieve all study programs.
+`/study-programs/{id}/`: Used to retrieve a specific study program.
+`/nodes/`: Used to retrieve all nodes and their associated questions.
+`/nodes/{id}/`: Used to retrieve a specific node and its associated question.
+`/nodes/{id}/responses/`: Used to retrieve all responses to the question associated with a specific node.
