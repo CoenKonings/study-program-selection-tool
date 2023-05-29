@@ -18,12 +18,11 @@ class NodeAdmin(admin.ModelAdmin):
     list_display = ["__str__", "id"]
 
 
-class ResponseAdmin(admin.ModelAdmin):
+class AnswerAdmin(admin.ModelAdmin):
     list_display = ["__str__", "id"]
 
 
 admin.site.register(StudyProgram, StudyProgramAdmin)
 admin.site.register(Node, NodeAdmin)
 admin.site.register(DecisionTree, DecisionTreeAdmin)
-admin.site.register(Question, QuestionAdmin)
-admin.site.register(Response, ResponseAdmin)
+admin.site.register(Answer, AnswerAdmin)

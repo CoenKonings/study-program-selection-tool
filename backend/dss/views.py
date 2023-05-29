@@ -2,6 +2,7 @@ from .models import *
 from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.decorators import action
+from rest_framework.response import Response
 from .serializers import *
 
 
@@ -24,9 +25,16 @@ class NodeViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = NodeSerializer
     permission_classes = []
 
-    @action(detail=True, methods=['post'])
-    def respond(self, request):
-        response_id = request.data
+    @action(detail=True, methods=['get'])
+    def responses(self, request, pk=None):
+        """
+        Action on a Node detail view. Retrieves all possible responses to this
+        Node's question.
+        """
+        answers = self.get_object().question.answer_set
+        serializer = AnswerSerializer(answers, many=True)
+
+        return Response(serializer.data)
 
 
 class StudyProgramViewSet(viewsets.ReadOnlyModelViewSet):

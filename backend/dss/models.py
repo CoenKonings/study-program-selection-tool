@@ -14,15 +14,11 @@ class StudyProgram(models.Model):
 
 class Question(models.Model):
     """
-    The question linked to a node of the decision tree. Each question can have
-    multiple associated responses, and each response leads to one of the next
-    nodes.
+    The model for a question. Each question is linked to a Node and can have
+    multiple Answers.
     """
 
     text = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.text
 
 
 class Node(models.Model):
@@ -33,9 +29,7 @@ class Node(models.Model):
     such should lead to a StudyProgram.
     """
 
-    question = models.ForeignKey(
-        Question, on_delete=models.SET_NULL, null=True, blank=True
-    )
+    question = models.ForeignKey(Question, on_delete=models.SET_NULL, null=True, blank=True)
     result = models.ForeignKey(
         StudyProgram, on_delete=models.SET_NULL, null=True, blank=True
     )
@@ -60,9 +54,9 @@ class DecisionTree(models.Model):
         return "Decision tree: {}.".format(self.name)
 
 
-class Response(models.Model):
+class Answer(models.Model):
     """
-    The response to a question. Each response leads to the next node in the
+    A response to a question. Each Answer leads to the next node in the
     decision tree.
     """
 
@@ -71,6 +65,6 @@ class Response(models.Model):
     leads_to = models.ForeignKey(Node, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "\"{}\" as response to \"{}\", leading to \"{}\".".format(
+        return "\"{}\" as answer to \"{}\", leading to \"{}\".".format(
             self.text, self.question, self.leads_to
         )

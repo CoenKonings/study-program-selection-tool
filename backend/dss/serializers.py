@@ -21,7 +21,7 @@ class NodeSerializer(serializers.ModelSerializer):
         depth = 1
 
 
-class ResponseSerializer(serializers.ModelSerializer):
+class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Response
+        model = Answer
         fields = ["id", "text", "leads_to"]
