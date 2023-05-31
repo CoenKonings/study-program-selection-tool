@@ -5,7 +5,7 @@ This repository contains a prototype of a study program selection tool. The tool
 ## Backend
 The backend is written in Django using Django Rest Framework. To setup, install the requirements in `requirements.txt`, navigate to the backend folder (where `manage.py` is located) and run `python manage.py migrate`. To run the development server, run `python manage.py runserver`.
 
-In order to be able to add, edit or delete entries in the database, a superuser should be created. This can be done by running the command `python manage.py createsuperuser`. Running the development server and navigating to `/admin` grants access to the admin panel.
+In order to be able to add, edit or delete entries in the database, a superuser should be created. This can be done by running the command `python manage.py createsuperuser`. Running the development server and navigating to `/admin/` grants access to the admin panel.
 
 ## Frontend
 The frontend of this project is built using Vite and React. To set up, navigate to the `backend` folder and run `npm install`. The development server can then be started by running `npm run dev`.
