@@ -12,6 +12,22 @@ class StudyProgram(models.Model):
         return self.name
 
 
+class Criterium(models.Model):
+    """
+    A criterium to be used in the PAW-PAW decision making method.
+    """
+    description = models.CharField(max_length=255)
+
+
+class Score(models.Model):
+    """
+    Each StudyProgram has a Score on each Criterium.
+    """
+    criterium = models.ForeignKey(Criterium, on_delete=models.CASCADE)
+    study_program = models.ForeignKey(StudyProgram, on_delete=models.CASCADE)
+    value = models.IntegerField()
+
+
 class Question(models.Model):
     """
     The model for a question. Each question is linked to a Node and can have
@@ -24,9 +40,9 @@ class Question(models.Model):
 class Node(models.Model):
     """
     The model for a node in a decision tree. Each node leads to either a
-    Question or a StudyProgram (result). If it leads to a Question, this node has children and
-    result should be null. A node without a question should be a leaf, and as
-    such should lead to a StudyProgram.
+    Question or a StudyProgram (result). If it leads to a Question, this node
+    has children and result should be null. A node without a question should be
+    a leaf, and as such should lead to a StudyProgram.
     """
 
     question = models.ForeignKey(

@@ -24,6 +24,7 @@ router = routers.DefaultRouter()
 router.register(r"decision-trees", views.DecisionTreeViewSet)
 router.register(r"study-programs", views.StudyProgramViewSet)
 router.register(r"nodes", views.NodeViewSet)
+router.register(r"criteria", views.CriteriumViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),

@@ -45,3 +45,13 @@ class StudyProgramViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = StudyProgram.objects.all().order_by("name")
     serializer_class = DecisionTreeSerializer
     permission_classes = []
+
+
+class CriteriumViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    API endpoint that allows Criteria to be viewed.
+    """
+
+    queryset = Criterium.objects.all()
+    serializer_class = CriteriumSerializer
+    permission_classes = []

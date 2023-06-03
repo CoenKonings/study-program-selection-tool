@@ -25,3 +25,9 @@ class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
         fields = ["id", "text", "leads_to"]
+
+
+class CriteriumSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Criterium
+        fields = ["id", "description"]
