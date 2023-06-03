@@ -1,8 +1,19 @@
+"""
+Author:         Coen Konings
+Student nr:     11283394
+Date:           May 29th, 2023
+
+Last edited:    June 3rd, 2023
+By:             Coen Konings
+
+views.py:
+Contains the views needed to make the DSS work.
+"""
 from .models import *
-from rest_framework import viewsets
-from rest_framework import permissions
+from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from .serializers import *
 
 
@@ -55,3 +66,20 @@ class CriteriumViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Criterium.objects.all()
     serializer_class = CriteriumSerializer
     permission_classes = []
+
+
+class CriteriaWeightView(APIView):
+    """
+    API endpoint that allows posting the results of pair-wise comparisons, and
+    returns a ranking of StudyPrograms.
+    """
+
+    permission_classes=[]
+
+    def post(self, request):
+        data = request.data
+
+        if pawpaw_result_valid(data):
+            return Response(":)", status=status.HTTP_200_OK)
+        else:
+            return Response(":(", status=status.HTTP_400_BAD_REQUEST)
