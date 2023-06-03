@@ -1,3 +1,16 @@
+"""
+Author:         Coen Konings
+Student nr:     11283394
+Date:           May 29th, 2023
+
+Last edited:    June 3rd, 2023
+By:             Coen Konings
+
+views.py:
+Contains the serializers needed to convert database entries into JSON for use
+in the API.
+"""
+
 from .models import *
 from rest_framework import serializers
 

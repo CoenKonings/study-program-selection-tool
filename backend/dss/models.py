@@ -1,3 +1,14 @@
+"""
+Author:         Coen Konings
+Student nr:     11283394
+Date:           May 29th, 2023
+
+Last edited:    June 3rd, 2023
+By:             Coen Konings
+
+views.py:
+Contains the models for the decision tree and PAW-PAW.
+"""
 from django.db import models
 
 
