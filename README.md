@@ -18,11 +18,19 @@ In the backend folder you will find two more folders, another folder called `bac
 
 ### Endpoints
 `/decision-trees/`: Used to retrieve all decision trees.
+
 `/decision-trees/{id}/`: Used to retrieve a specific decision tree.
+
 `/study-programs/`: Used to retrieve all study programs.
+
 `/study-programs/{id}/`: Used to retrieve a specific study program.
+
 `/nodes/`: Used to retrieve all nodes and their associated questions.
+
 `/nodes/{id}/`: Used to retrieve a specific node and its associated question.
+
 `/nodes/{id}/responses/`: Used to retrieve all responses to the question associated with a specific node.
+
 `/criteria/`: Used to retrieve all criteria.
+
 `/criteria/{id}`: Used to retrieve a specific criterium.
