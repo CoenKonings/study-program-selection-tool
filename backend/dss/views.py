@@ -15,7 +15,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import *
-from .helpers import pawpaw_result_valid
+from .helpers import pawpaw_result_validate_data_types, generate_ranking
 
 
 class DecisionTreeViewSet(viewsets.ReadOnlyModelViewSet):
@@ -79,9 +79,9 @@ class CriteriaWeightView(APIView):
 
     def post(self, request):
         data = request.data
-        valid, error = pawpaw_result_valid(data)
+        valid, error = pawpaw_result_validate_data_types(data)
 
         if valid:
-            return Response(":)", status=status.HTTP_200_OK)
+            return generate_ranking(data)
         else:
             return Response({"detail": error}, status=status.HTTP_400_BAD_REQUEST)
