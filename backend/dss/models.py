@@ -30,6 +30,9 @@ class Criterium(models.Model):
 
     description = models.CharField(max_length=255)
 
+    def __str__(self):
+        return "Criterium {}: {}".format(self.id, self.description)
+
 
 class Score(models.Model):
     """
@@ -38,7 +41,10 @@ class Score(models.Model):
 
     criterium = models.ForeignKey(Criterium, on_delete=models.CASCADE)
     study_program = models.ForeignKey(StudyProgram, on_delete=models.CASCADE)
-    value = models.IntegerField()
+    value = models.FloatField()
+
+    class Meta:
+        unique_together = ('criterium', 'study_program',)
 
 
 class Question(models.Model):
