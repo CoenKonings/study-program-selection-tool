@@ -15,7 +15,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import *
-from .helpers import pawpaw_result_validate_data_types, generate_ranking
+from .helpers import pawpaw_result_validate_data_types, pawpaw
 
 
 class DecisionTreeViewSet(viewsets.ReadOnlyModelViewSet):
@@ -82,6 +82,15 @@ class CriteriaWeightView(APIView):
         valid, error = pawpaw_result_validate_data_types(data)
 
         if valid:
-            return generate_ranking(data)
+            success, result = pawpaw(data)
+
+            if not success:
+                return Response({"detail": result}, status.HTTP_400_BAD_REQUEST)
+
+            # Serialize the study programs to be able to send them.
+            for item in result["ranking"]:
+                serializer = StudyProgramSerializer(item["study_program"])
+                item["study_program"] = serializer.data
+            return Response(result, status=status.HTTP_200_OK)
         else:
             return Response({"detail": error}, status=status.HTTP_400_BAD_REQUEST)
