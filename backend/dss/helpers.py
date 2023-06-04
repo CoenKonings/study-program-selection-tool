@@ -7,6 +7,7 @@ helpers.py:
 Contains helper functions needed in other files.
 """
 
+
 def pawpaw_result_valid(data):
     """
     Validate whether the passed data is a dictionary that represents a valid
@@ -29,12 +30,16 @@ def pawpaw_result_valid(data):
         # Check if matrix is a list of the same length as the criteria list.
         return False, "Matrix is not list or has invalid length."
 
-    if not all(type(i) is list for i in data["matrix"]) or not all(len(i) == len(data["criteria"]) for i in data["matrix"]):
+    if not all(type(i) is list for i in data["matrix"]) or not all(
+        len(i) == len(data["criteria"]) for i in data["matrix"]
+    ):
         # Check if all elements of matrix are lists, and if all inner lists
         # are the same size as the outer list.
         return False, "Matrix is not nested list or inner lists have invalid length."
 
-    if not all(all(type(j) is float or type(j) is int for j in i) for i in data["matrix"]):
+    if not all(
+        all(type(j) is float or type(j) is int for j in i) for i in data["matrix"]
+    ):
         # Check if all elements in all inner lists are integers or floats.
         return False, "Not all elements of inner lists of matrix are numbers."
 

@@ -27,6 +27,7 @@ class Criterium(models.Model):
     """
     A criterium to be used in the PAW-PAW decision making method.
     """
+
     description = models.CharField(max_length=255)
 
 
@@ -34,6 +35,7 @@ class Score(models.Model):
     """
     Each StudyProgram has a Score on each Criterium.
     """
+
     criterium = models.ForeignKey(Criterium, on_delete=models.CASCADE)
     study_program = models.ForeignKey(StudyProgram, on_delete=models.CASCADE)
     value = models.IntegerField()

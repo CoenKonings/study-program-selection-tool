@@ -75,7 +75,7 @@ class CriteriaWeightView(APIView):
     returns a ranking of StudyPrograms.
     """
 
-    permission_classes=[]
+    permission_classes = []
 
     def post(self, request):
         data = request.data
