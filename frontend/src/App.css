@@ -42,9 +42,17 @@
 }
 
 .criteria-form {
-  place-items: left;
+  text-align: left;
+  width: fit-content;
+  margin: auto;
+  margin-bottom: 20px;
 }
 
 label {
   display: block;
+}
+
+input[type="submit"] {
+  padding: 5px;
+  margin-top: 5px;
 }

@@ -55,8 +55,8 @@ function SystemSelector() {
 */
 function PawPaw({ reset }) {
   let [criteria, setCriteria] = useState([]);
-  let [selectedCriteria, setSelectedCriteria] = useState([]);
 
+  // Function to get all criteria from the back-end. TODO: URL in env.
   const fetchCriteria = () => fetch("http://localhost:8000/criteria/")
     .then(response => {
       return response.json();
@@ -69,13 +69,15 @@ function PawPaw({ reset }) {
       fetchCriteria();
     }, []);
 
+  // Display criteria selector if no criteria were selected, otherwise display
+  // the comparisons to be made by the user.
   return (
     <>
       <h2>PAW-PAW</h2>
-      <CriteriaSelector
+      {selectedCriteria.length === 0 ? <CriteriaSelector
         criteria={criteria}
         setSelectedCriteria={setSelectedCriteria}
-      />
+      /> : <p>test</p>}
       <button onClick={reset}>Back to menu</button>
     </>
   );
@@ -125,21 +127,29 @@ function CriteriaSelector({ criteria, setSelectedCriteria }) {
     setNQuestions(sum);
   }, [checkedCriteria]);
 
+  // Called when a checkbox for a criterium is checked or unchecked.
   const handleCheck = (event, criterium) => {
     if (event.target.checked) {
+      // Add criterium to checkedCriteria.
       setCheckedCriteria([...checkedCriteria, criterium]);
     } else {
+      // Remove criterium from checkedCriteria.
       setCheckedCriteria(checkedCriteria.filter(c => c !== criterium));
     }
   }
 
-  // TODO: submit form -> set state in PawPaw component.
+  // Called when the criteria selection form is submitted.
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setSelectedCriteria(checkedCriteria);
+  }
+
   return (
     <>
       <h2>Selecteer de criteria die je wil gebruiken.</h2>
-      <p>Aantal vragen dat je gesteld gaat worden: {nQuestions}</p>
+      <p>Aantal vragen dat je moet beantwoorden: {nQuestions}</p>
       <p>Aantal criteria: {checkedCriteria.length}</p>
-      <form className="criteria-form">
+      <form method="post" onSubmit={handleSubmit} className="criteria-form">
         {criteria.map(criterium => (
           <label key={criterium.id}>
             <input
@@ -151,6 +161,7 @@ function CriteriaSelector({ criteria, setSelectedCriteria }) {
             {criterium.description}
           </label>
         ))}
+        {checkedCriteria.length > 1 ? <button type="submit">Verder</button> : null}
       </form>
     </>
   );
