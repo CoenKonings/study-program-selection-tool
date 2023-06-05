@@ -40,3 +40,11 @@
 .read-the-docs {
   color: #888;
 }
+
+.criteria-form {
+  place-items: left;
+}
+
+label {
+  display: block;
+}
