@@ -1,3 +1,14 @@
+"""
+Author:         Coen Konings
+Student nr:     11283394
+Date:           May 29th, 2023
+
+Last edited:    June 3rd, 2023
+By:             Coen Konings
+
+views.py:
+Contains the models for the decision tree and PAW-PAW.
+"""
 from django.db import models
 
 
@@ -16,16 +27,24 @@ class Criterium(models.Model):
     """
     A criterium to be used in the PAW-PAW decision making method.
     """
+
     description = models.CharField(max_length=255)
+
+    def __str__(self):
+        return "Criterium {}: {}".format(self.id, self.description)
 
 
 class Score(models.Model):
     """
     Each StudyProgram has a Score on each Criterium.
     """
+
     criterium = models.ForeignKey(Criterium, on_delete=models.CASCADE)
     study_program = models.ForeignKey(StudyProgram, on_delete=models.CASCADE)
-    value = models.IntegerField()
+    value = models.FloatField()
+
+    class Meta:
+        unique_together = ('criterium', 'study_program',)
 
 
 class Question(models.Model):
