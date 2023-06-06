@@ -23,53 +23,59 @@ function PawPaw({ reset }) {
       setCriteria(data);
     });
 
-    // Fetch criteria when the component loads.
-    useEffect(() => {
-      fetchCriteria();
-    }, []);
+  // Fetch criteria when the component loads.
+  useEffect(() => {
+    fetchCriteria();
+  }, []);
 
-    // Initialize comparison matrix when selectedCriteria is updated.
-    useEffect(() => {
-      const size = selectedCriteria.length;
+  // Set currentComparison to the next comparison.
+  const goToNextComparison = () => {
+    if (currentComparison === null) {
+      console.log("Setting currentComparison to [0, 1]");
+      setCurrentComparison([0, 1]);
+      return;
+    }
 
-      if (size !== 0) {
-        // Create 2D array with "size" rows and "size" columns filled with 0s.
-        const matrix = new Array(size).fill().map(() => new Array(size).fill(0));
-        // Put 1s on the diagonals.
-        for (let i = 0; i < matrix.length; i++) {
-          matrix[i][i] = 1;
-        }
+    // Shallow copy of currentComparison.
+    let nextComparison = [...currentComparison];
 
-        setComparisons(matrix);
+    if (nextComparison[1] < comparisons.length - 1) {
+      nextComparison[1]++;
+    } else if (nextComparison[0] < comparisons.length - 2) {
+      nextComparison[0]++;
+      nextComparison[1] = nextComparison[0] + 1;
+    } else {
+      nextComparison = null;
+    }
+
+    console.log("Setting currentComparison to " + nextComparison);
+    setCurrentComparison(nextComparison);
+  };
+
+  // Initialize comparison matrix when selectedCriteria is updated.
+  useEffect(() => {
+    const size = selectedCriteria.length;
+
+    if (size !== 0) {
+      // Create 2D array with "size" rows and "size" columns filled with 0s.
+      const matrix = new Array(size).fill().map(() => new Array(size).fill(0));
+      // Put 1s on the diagonals.
+      for (let i = 0; i < matrix.length; i++) {
+        matrix[i][i] = 1;
       }
-    }, [selectedCriteria]);
 
-    // If comparisons change, set currentComparison to the next comparison.
-    useEffect(() => {
-      if (currentComparison === null) {
-        setCurrentComparison([0, 1]);
-        return;
-      }
-
-      // Shallow copy of currentComparison.
-      let nextComparison = [...currentComparison];
-
-      if (nextComparison[1] < comparisons.length - 1) {
-        nextComparison[1]++;
-      } else if (nextComparison[0] < comparisons.length - 1) {
-        nextComparison[0]++;
-        nextComparison[1] = nextComparison[0] + 1;
-      } else {
-        currentComparison = null;
-      }
-    }, [comparisons]);
+      setComparisons(matrix);
+      console.log("setting currentComparison to [0, 1]");
+      setCurrentComparison([0, 1]);
+    }
+  }, [selectedCriteria]);
 
   // Display criteria selector if no criteria were selected, otherwise display
   // the comparisons to be made by the user.
   return (
     <>
       <h2>PAW-PAW</h2>
-      {selectedCriteria.length === 0 ? <CriteriaSelector
+      {currentComparison === null ? <CriteriaSelector
         criteria={criteria}
         setSelectedCriteria={setSelectedCriteria}
       /> : <Comparison
@@ -77,6 +83,7 @@ function PawPaw({ reset }) {
         currentComparison={currentComparison}
         comparisons={comparisons}
         setComparisons={setComparisons}
+        goToNextComparison={goToNextComparison}
       />}
       <button onClick={reset} className='back-button'>Terug naar hoofdmenu</button>
     </>
@@ -145,12 +152,16 @@ function CriteriaSelector({ criteria, setSelectedCriteria }) {
  * A component that allows the user to perform a pair-wise comparison of
  * criteria.
  */
-function Comparison({ criteria, currentComparison, comparisons, setComparisons }) {
+function Comparison({ criteria, currentComparison, comparisons, setComparisons, goToNextComparison }) {
   let [mostImportant, setMostImportant] = useState(null);
+  let [relativeImportance, setRelativeImportance] = useState(null);
+
   const criterium1 = criteria[currentComparison[0]];
   const criterium2 = criteria[currentComparison[1]];
   let relativeImportanceSelector = [];
+
   for (let i = 1; i < 9; i++) {
+    // Generate the radio buttons for evaluation of relative importance.
     relativeImportanceSelector.push(<label key={"relative-importance-" + i}>
       {i}
       <input
@@ -162,35 +173,87 @@ function Comparison({ criteria, currentComparison, comparisons, setComparisons }
     </label>);
   }
 
+  // Change a value in "comparisons" at (x, y) using "setComparisons".
+  const updateMatrix = (x, y, value) => {
+    // Create copy of comparisons.
+    const newComparisons = comparisons.slice();
+    // Update value at relevant locations.
+    newComparisons[x][y] = value;
+    newComparisons[y][x] = 1 / value;
+    setComparisons(newComparisons);
+  }
+
+  // Update the state with the user's decision on which criterium is more
+  // important.
   const handleClick = (answer) => {
-    const newComparisons = comparisons;
+    console.log(answer);
+    // Check if the answer changes anything.
+    if (answer === mostImportant) {
+      return;
+    }
+
+    setMostImportant(answer);
 
     if (answer === -1) {
-      comparisons[currentComparison[1]][currentComparison[0]] = 1;
-      setComparisons(newComparisons);
-    } else if (answer = 0) {
-      setMostImportant(0);
-    } else {
-      setMostImportant(1);
+      updateMatrix(currentComparison[0], currentComparison[1], 1);
+      console.log("even belangrijk");
+      return;
+    }
+
+    // Ensure that the matrix is updated if the user selects the other
+    // criterium after a relative importance was already given.
+    if (relativeImportance) {
+      const x = currentComparison[answer];
+      const y = currentComparison[Math.abs(answer - 1)];
+      updateMatrix(x, y, relativeImportance);
     }
   }
 
   const handleChange = (event) => {
-    console.log(event);
+    const rating = parseInt(event.target.value) + 1;
+    setRelativeImportance(rating);
+    // Set x to position of more important criterium.
+    const x = currentComparison[mostImportant];
+    const y = currentComparison[Math.abs(mostImportant - 1)];
+    updateMatrix(x, y, rating);
+  }
+
+  // Handle the user clicking the "next" button.
+  const handleNextClick = () => {
+    setMostImportant(null);
+    setRelativeImportance(null);
+    goToNextComparison();
   }
 
   return (
     <>
-      <h2>Selecteer welk onderwerp je belangrijker vindt:</h2>
-      <p>
-        {criterium1.description} of {criterium2.description}
-      </p>
+      <h2>Selecteer wat je belangrijker vindt:</h2>
       <div>
-        <button onClick={() => handleClick(0)}>{criterium1.description}</button>
-        <button onClick={() => handleClick(-1)}>Even belangrijk</button>
-        <button onClick={() => handleClick(1)}>{criterium2.description}</button>
+        <p>{criterium1.description}</p>
+        <p>of</p>
+        <p>{criterium2.description}</p>
       </div>
-      {mostImportant && <>
+      <div>
+        <button
+          onClick={() => handleClick(0)}
+          className={mostImportant === 0 ? 'active' : ''}
+        >
+          {criterium1.description}
+        </button>
+
+        <button
+          onClick={() => handleClick(-1)}
+          className={mostImportant === -1 ? 'active' : ''}
+        >Even belangrijk</button>
+
+        <button
+          onClick={() => handleClick(1)}
+          className={mostImportant === 1 ? 'active' : ''}
+        >
+          {criterium2.description}
+        </button>
+      </div>
+      {mostImportant !== null && mostImportant >= 0 && <>
         <h2>Hoe veel belangrijker is dit criterium?</h2>
         <p>1 (iets belangrijker) - 8 (veel belangrijker)</p>
         <form
@@ -201,6 +264,10 @@ function Comparison({ criteria, currentComparison, comparisons, setComparisons }
           {relativeImportanceSelector}
         </form>
       </>}
+      <button
+        onClick={handleNextClick}
+        disabled={relativeImportance === null && mostImportant !== -1}
+      >Verder</button>
     </>
   )
 }
