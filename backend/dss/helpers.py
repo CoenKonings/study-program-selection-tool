@@ -73,11 +73,9 @@ def weighted_sum_method(weights, criteria):
     """
     study_programs = StudyProgram.objects.all()
     scores = [{"study_program": study_program, "score": 0} for study_program in study_programs]
-    print(scores)
 
     for index, weight in enumerate(weights):
         criterium = criteria[index]
-        print(criterium, weight)
 
         for score in scores:
             score["score"] += weight * score["study_program"].score_set.get(criterium=criterium).value
