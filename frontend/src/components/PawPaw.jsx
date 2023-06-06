@@ -13,6 +13,8 @@ function PawPaw({ reset }) {
   let [currentComparison, setCurrentComparison] = useState(null);
   // The matrix resulting from the comparisons.
   let [comparisons, setComparisons] = useState(null);
+  // A boolean that tracks whether all comparisons are done.
+  let [comparisonsDone, setComparisonsDone] = useState(false);
 
   // Function to get all criteria from the back-end. TODO: URL in env.
   const fetchCriteria = () => fetch("http://localhost:8000/criteria/")
@@ -31,7 +33,6 @@ function PawPaw({ reset }) {
   // Set currentComparison to the next comparison.
   const goToNextComparison = () => {
     if (currentComparison === null) {
-      console.log("Setting currentComparison to [0, 1]");
       setCurrentComparison([0, 1]);
       return;
     }
@@ -46,9 +47,9 @@ function PawPaw({ reset }) {
       nextComparison[1] = nextComparison[0] + 1;
     } else {
       nextComparison = null;
+      setComparisonsDone(true);
     }
 
-    console.log("Setting currentComparison to " + nextComparison);
     setCurrentComparison(nextComparison);
   };
 
@@ -65,7 +66,6 @@ function PawPaw({ reset }) {
       }
 
       setComparisons(matrix);
-      console.log("setting currentComparison to [0, 1]");
       setCurrentComparison([0, 1]);
     }
   }, [selectedCriteria]);
@@ -75,15 +75,18 @@ function PawPaw({ reset }) {
   return (
     <>
       <h2>PAW-PAW</h2>
-      {currentComparison === null ? <CriteriaSelector
+      {currentComparison === null && !comparisonsDone ? <CriteriaSelector
         criteria={criteria}
         setSelectedCriteria={setSelectedCriteria}
-      /> : <Comparison
+      /> : currentComparison !== null ? <Comparison
         criteria={selectedCriteria}
         currentComparison={currentComparison}
         comparisons={comparisons}
         setComparisons={setComparisons}
         goToNextComparison={goToNextComparison}
+      /> : <Result
+        comparisons={comparisons}
+        criteria={selectedCriteria}
       />}
       <button onClick={reset} className='back-button'>Terug naar hoofdmenu</button>
     </>
@@ -128,8 +131,8 @@ function CriteriaSelector({ criteria, setSelectedCriteria }) {
   return (
     <>
       <h2>Selecteer de criteria die je wil meenemen in je keuze.</h2>
+      <p>Aantal geselecteerde criteria: {checkedCriteria.length}</p>
       <p>Aantal vragen dat je moet beantwoorden: {nQuestions}</p>
-      <p>Aantal criteria: {checkedCriteria.length}</p>
       <form method="post" onSubmit={handleSubmit} className="criteria-form">
         {criteria.map(criterium => (
           <label key={criterium.id}>
@@ -186,7 +189,6 @@ function Comparison({ criteria, currentComparison, comparisons, setComparisons, 
   // Update the state with the user's decision on which criterium is more
   // important.
   const handleClick = (answer) => {
-    console.log(answer);
     // Check if the answer changes anything.
     if (answer === mostImportant) {
       return;
@@ -196,7 +198,6 @@ function Comparison({ criteria, currentComparison, comparisons, setComparisons, 
 
     if (answer === -1) {
       updateMatrix(currentComparison[0], currentComparison[1], 1);
-      console.log("even belangrijk");
       return;
     }
 
@@ -269,7 +270,71 @@ function Comparison({ criteria, currentComparison, comparisons, setComparisons, 
         disabled={relativeImportance === null && mostImportant !== -1}
       >Verder</button>
     </>
-  )
+  );
+}
+
+function Result({ comparisons, criteria }) {
+  let [result, setResult] = useState(null);
+
+  const sortResults = (a, b) => {
+    if (a.score < b.score) {
+      return 1;
+    } else if (a.score === b.score) {
+      return 0;
+    } else {
+      return -1;
+    }
+  }
+
+  const fetchResult = () => {
+    const criteriaIDs = criteria.map(criterium => criterium.id);
+    fetch('http://localhost:8000/pawpaw-result/', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "criteria": criteriaIDs,
+        "matrix": comparisons
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        setResult(data);
+        console.log(data.consistency);
+      });
+  };
+
+  useEffect(fetchResult, []);
+
+  const displayResult = () => {
+    result.ranking.sort(sortResults);
+    return result.ranking.map(item => {
+      const name = item.study_program.name;
+      const score = Math.round(item.score);
+      return <li key={"ranking-" + name}>{name} ({score})</li>
+    });
+  }
+
+  return (
+    <div className="pawpaw-result-explanation">
+      <h2>Resultaat:</h2>
+      <p>
+        De bovenste studie past het best bij je antwoorden, de onderste het
+        minst goed. De getallen achter de namen van de studies geven de
+        onderlinge verhoudingen aan van hoe hoog ze scoren bij jouw interesses.
+      </p>
+      <div>
+        {!result ? <h2>Resultaat wordt opgehaald...</h2> : <ol>{displayResult()}</ol>}
+        {
+          result && "Je antwoorden op de vragen waren " + (result.consistency
+          ? "consistent."
+          : "inconsistent. Het kan een goed idee zijn om de vragen opnieuw te beantwoorden.")
+        }
+      </div>
+    </div>
+  );
 }
 
 export default PawPaw;

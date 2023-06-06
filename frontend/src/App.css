@@ -70,3 +70,12 @@ input[type="submit"] {
 button.active {
   border-color: #646cffaa;
 }
+
+ol {
+  text-align: left;
+}
+
+.pawpaw-result-explanation {
+  text-align: left;
+  max-width: 500px;
+}
