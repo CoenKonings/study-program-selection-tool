@@ -5,9 +5,13 @@ import { useState, useEffect } from 'react'
  * system.
 */
 function PawPaw({ reset }) {
+  // All criteria, to be fetched from the API.
   let [criteria, setCriteria] = useState([]);
+  // Criteria selected to be used in comparisons.
   let [selectedCriteria, setSelectedCriteria] = useState([]);
-  let [currentComparison, setCurrentComparison] = useState(0);
+  // The indices of the criteria that are currently being compared.
+  let [currentComparison, setCurrentComparison] = useState(null);
+  // The matrix resulting from the comparisons.
   let [comparisons, setComparisons] = useState(null);
 
   // Function to get all criteria from the back-end. TODO: URL in env.
@@ -30,12 +34,34 @@ function PawPaw({ reset }) {
 
       if (size !== 0) {
         // Create 2D array with "size" rows and "size" columns filled with 0s.
-        setComparisons(new Array(size).fill().map(() => new Array(size).fill(0)));
+        const matrix = new Array(size).fill().map(() => new Array(size).fill(0));
+        // Put 1s on the diagonals.
+        for (let i = 0; i < matrix.length; i++) {
+          matrix[i][i] = 1;
+        }
+
+        setComparisons(matrix);
       }
     }, [selectedCriteria]);
 
+    // If comparisons change, set currentComparison to the next comparison.
     useEffect(() => {
-      console.log(comparisons);
+      if (currentComparison === null) {
+        setCurrentComparison([0, 1]);
+        return;
+      }
+
+      // Shallow copy of currentComparison.
+      let nextComparison = [...currentComparison];
+
+      if (nextComparison[1] < comparisons.length - 1) {
+        nextComparison[1]++;
+      } else if (nextComparison[0] < comparisons.length - 1) {
+        nextComparison[0]++;
+        nextComparison[1] = nextComparison[0] + 1;
+      } else {
+        currentComparison = null;
+      }
     }, [comparisons]);
 
   // Display criteria selector if no criteria were selected, otherwise display
@@ -46,8 +72,13 @@ function PawPaw({ reset }) {
       {selectedCriteria.length === 0 ? <CriteriaSelector
         criteria={criteria}
         setSelectedCriteria={setSelectedCriteria}
-      /> : <Comparison />}
-      <button onClick={reset}>Terug naar hoofdmenu</button>
+      /> : <Comparison
+        criteria={selectedCriteria}
+        currentComparison={currentComparison}
+        comparisons={comparisons}
+        setComparisons={setComparisons}
+      />}
+      <button onClick={reset} className='back-button'>Terug naar hoofdmenu</button>
     </>
   );
 }
@@ -114,10 +145,62 @@ function CriteriaSelector({ criteria, setSelectedCriteria }) {
  * A component that allows the user to perform a pair-wise comparison of
  * criteria.
  */
-function Comparison() {
+function Comparison({ criteria, currentComparison, comparisons, setComparisons }) {
+  let [mostImportant, setMostImportant] = useState(null);
+  const criterium1 = criteria[currentComparison[0]];
+  const criterium2 = criteria[currentComparison[1]];
+  let relativeImportanceSelector = [];
+  for (let i = 1; i < 9; i++) {
+    relativeImportanceSelector.push(<label key={"relative-importance-" + i}>
+      {i}
+      <input
+        type="radio"
+        name="relative-importance"
+        id={"relative-importance-" + i}
+        value={i}
+      />
+    </label>);
+  }
+
+  const handleClick = (answer) => {
+    const newComparisons = comparisons;
+
+    if (answer === -1) {
+      comparisons[currentComparison[1]][currentComparison[0]] = 1;
+      setComparisons(newComparisons);
+    } else if (answer = 0) {
+      setMostImportant(0);
+    } else {
+      setMostImportant(1);
+    }
+  }
+
+  const handleChange = (event) => {
+    console.log(event);
+  }
+
   return (
     <>
-      <p>test</p>
+      <h2>Selecteer welk onderwerp je belangrijker vindt:</h2>
+      <p>
+        {criterium1.description} of {criterium2.description}
+      </p>
+      <div>
+        <button onClick={() => handleClick(0)}>{criterium1.description}</button>
+        <button onClick={() => handleClick(-1)}>Even belangrijk</button>
+        <button onClick={() => handleClick(1)}>{criterium2.description}</button>
+      </div>
+      {mostImportant && <>
+        <h2>Hoe veel belangrijker is dit criterium?</h2>
+        <p>1 (iets belangrijker) - 8 (veel belangrijker)</p>
+        <form
+          method="post"
+          onChange={handleChange}
+          className="importance-form"
+        >
+          {relativeImportanceSelector}
+        </form>
+      </>}
     </>
   )
 }

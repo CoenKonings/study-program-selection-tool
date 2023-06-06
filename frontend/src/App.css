@@ -48,11 +48,21 @@
   margin-bottom: 20px;
 }
 
-label {
+.criteria-form > label {
   display: block;
 }
 
 input[type="submit"] {
   padding: 5px;
   margin-top: 5px;
+}
+
+.importance-form {
+  margin-bottom: 20px;
+}
+
+.importance-form > label {
+  display: inline-flex;
+  flex-direction: column;
+  margin-left: 10px;
 }
