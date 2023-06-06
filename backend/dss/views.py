@@ -25,7 +25,7 @@ class DecisionTreeViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = DecisionTree.objects.all().order_by("id")
     serializer_class = DecisionTreeSerializer
-    permission_classes = []
+    permission_classes = [permissions.AllowAny]
 
 
 class NodeViewSet(viewsets.ReadOnlyModelViewSet):
@@ -35,7 +35,7 @@ class NodeViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Node.objects.all().order_by("id")
     serializer_class = NodeSerializer
-    permission_classes = []
+    permission_classes = [permissions.AllowAny]
 
     @action(detail=True, methods=["get"])
     def responses(self, request, pk=None):
@@ -56,7 +56,7 @@ class StudyProgramViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = StudyProgram.objects.all().order_by("name")
     serializer_class = DecisionTreeSerializer
-    permission_classes = []
+    permission_classes = [permissions.AllowAny]
 
 
 class CriteriumViewSet(viewsets.ReadOnlyModelViewSet):
@@ -66,7 +66,7 @@ class CriteriumViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Criterium.objects.all()
     serializer_class = CriteriumSerializer
-    permission_classes = []
+    permission_classes = [permissions.AllowAny]
 
 
 class CriteriaWeightView(APIView):
@@ -75,7 +75,7 @@ class CriteriaWeightView(APIView):
     returns a ranking of StudyPrograms.
     """
 
-    permission_classes = []
+    permission_classes = [permissions.AllowAny]
 
     def post(self, request):
         data = request.data

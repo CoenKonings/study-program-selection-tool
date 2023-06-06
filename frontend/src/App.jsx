@@ -1,35 +1,79 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import PawPaw from './components/PawPaw.jsx'
 
+/**
+ * Main App component which functions as the root of the component tree.
+ */
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <SystemSelector />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+/**
+ * This component allows the user to select one of the decision support
+ * systems.
+ */
+function SystemSelector() {
+  // System 0 is Decision Tree, system 1 is PAW-PAW, system 2 is the
+  // conversational system. Any other value displays the SystemSelector
+  // component.
+  let [system, setSystem] = useState(null);
+  const reset = () => setSystem(null);
+
+  if (system === 0) {
+    return <DecisionTree
+      reset={reset}
+    />;
+  } else if (system === 1) {
+    return <PawPaw
+      reset={reset}
+    />;
+  } else if (system === 2) {
+    return <ConversationalSystem
+      reset={reset}
+    />;
+  }
+
+  return (
+    <>
+      <h1>Selecteer een systeem</h1>
+      <button onClick={() => setSystem(0)}>Decision Tree</button>
+      <button onClick={() => setSystem(1)}>PAW-PAW</button>
+      <button onClick={() => setSystem(2)}>Conversational System</button>
+    </>
+  );
+}
+
+/**
+ * The component that provides an interface for the Decision Tree decision
+ * support system.
+ */
+function DecisionTree({ reset }) {
+  return (
+    <>
+      <h2>Decision Tree</h2>
+      <button onClick={reset}>Terug naar hoofdmenu</button>
+    </>
+  );
+}
+
+/**
+ * The component that provides an interface for the conversational decision
+ * support system.
+ */
+function ConversationalSystem({ reset }) {
+  return (
+    <>
+      <h2>Conversational System</h2>
+      <button onClick={reset}>Terug naar hoofdmenu</button>
+    </>
+  );
+}
+
+export default App;

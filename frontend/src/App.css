@@ -40,3 +40,42 @@
 .read-the-docs {
   color: #888;
 }
+
+.criteria-form {
+  text-align: left;
+  width: fit-content;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+.criteria-form > label {
+  display: block;
+}
+
+input[type="submit"] {
+  padding: 5px;
+  margin-top: 5px;
+}
+
+.importance-form {
+  margin-bottom: 20px;
+}
+
+.importance-form > label {
+  display: inline-flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+button.active {
+  border-color: #646cffaa;
+}
+
+ol {
+  text-align: left;
+}
+
+.pawpaw-result-explanation {
+  text-align: left;
+  max-width: 500px;
+}
