@@ -69,7 +69,7 @@ class CriteriumViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.AllowAny]
 
 
-class CriteriaWeightView(APIView):
+class PawPawResultView(APIView):
     """
     API endpoint that allows posting the results of pair-wise comparisons, and
     returns a ranking of StudyPrograms.

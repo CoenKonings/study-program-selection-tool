@@ -24,5 +24,5 @@ router.register(r"criteria", views.CriteriumViewSet)
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include(router.urls)),
-    path("pawpaw-result/", views.CriteriaWeightView.as_view()),
+    path("pawpaw-result/", views.PawPawResultView.as_view()),
 ]
