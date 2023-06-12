@@ -32,3 +32,6 @@ In the backend folder you will find two more folders, another folder called `bac
 `/criteria/`: Used to retrieve all criteria.
 
 `/criteria/{id}`: Used to retrieve a specific criterium.
+
+## Frontend
+The frontend can be found in `/frontend/` and is built entirely in React JS. The main `App` component and its child component that allows the user to select one of the three implemented decision making methods, `SystemSelector`, are located in `/frontend/src/App.jsx`. The components necessary for each of the three decision making methods are located in the respective files in `/frontend/src/components/`.
