@@ -72,13 +72,17 @@ def weighted_sum_method(weights, criteria):
                         weighted score.
     """
     study_programs = StudyProgram.objects.all()
-    scores = [{"study_program": study_program, "score": 0} for study_program in study_programs]
+    scores = [
+        {"study_program": study_program, "score": 0} for study_program in study_programs
+    ]
 
     for index, weight in enumerate(weights):
         criterium = criteria[index]
 
         for score in scores:
-            score["score"] += weight * score["study_program"].score_set.get(criterium=criterium).value
+            score["score"] += (
+                weight * score["study_program"].score_set.get(criterium=criterium).value
+            )
 
     return scores
 
@@ -92,7 +96,9 @@ def pawpaw(data):
     @returns:       The HTTP response that the view should return.
     """
     # Retrieve all criteria from the database in the correct order.
-    preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(data["criteria"])])
+    preserved = Case(
+        *[When(pk=pk, then=pos) for pos, pk in enumerate(data["criteria"])]
+    )
     criteria = Criterium.objects.filter(pk__in=data["criteria"]).order_by(preserved)
 
     if len(criteria) != len(data["criteria"]):

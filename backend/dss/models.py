@@ -44,7 +44,10 @@ class Score(models.Model):
     value = models.FloatField()
 
     class Meta:
-        unique_together = ('criterium', 'study_program',)
+        unique_together = (
+            "criterium",
+            "study_program",
+        )
 
 
 class Question(models.Model):

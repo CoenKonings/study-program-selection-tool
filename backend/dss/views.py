@@ -37,16 +37,14 @@ class NodeViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = NodeSerializer
     permission_classes = [permissions.AllowAny]
 
-    @action(detail=True, methods=["get"])
-    def responses(self, request, pk=None):
-        """
-        Action on a Node detail view. Retrieves all possible responses to this
-        Node's question.
-        """
-        answers = self.get_object().question.answer_set
-        serializer = AnswerSerializer(answers, many=True)
-
-        return Response(serializer.data)
+    # @action(detail=True, methods=["get"])
+    # def answers(self, request, pk=None):
+    #     """
+    #     Action on a Node detail view. Retrieves all possible responses to this
+    #     Node's question.
+    #     """
+    #     answers = self.get_object().question.answer_set
+    #     answerSerializer = AnswerSerializer(answers, many=True)
 
 
 class StudyProgramViewSet(viewsets.ReadOnlyModelViewSet):

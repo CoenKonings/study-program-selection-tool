@@ -1,10 +1,18 @@
+/**
+ * Author:      Coen Konings
+ * Date:        June 5, 2023
+ *
+ * Edited:      June 12, 2023
+ * By:          Coen Konings
+ */
+
 import { useState, useEffect } from 'react'
 
 /**
  * The component that provides an interface for the PAW-PAW decision support
  * system.
 */
-function PawPaw({ reset }) {
+function PawPaw() {
   // All criteria, to be fetched from the API.
   let [criteria, setCriteria] = useState([]);
   // Criteria selected to be used in comparisons.
@@ -88,7 +96,6 @@ function PawPaw({ reset }) {
         comparisons={comparisons}
         criteria={selectedCriteria}
       />}
-      <button onClick={reset} className='back-button'>Terug naar hoofdmenu</button>
     </>
   );
 }
