@@ -1,6 +1,15 @@
-import { useState } from 'react'
-import './App.css'
-import PawPaw from './components/PawPaw.jsx'
+/**
+ * Author:      Coen Konings
+ * Date:        June 5, 2023
+ *
+ * Edited:      June 12, 2023
+ * By:          Coen Konings
+ */
+
+import { useEffect, useState } from 'react';
+import './App.css';
+import PawPaw from './components/PawPaw.jsx';
+import DecisionTree from './components/DecisionTree.jsx';
 
 /**
  * Main App component which functions as the root of the component tree.
@@ -24,41 +33,38 @@ function SystemSelector() {
   // conversational system. Any other value displays the SystemSelector
   // component.
   let [system, setSystem] = useState(null);
+  let [display, setDisplay] = useState(null);
   const reset = () => setSystem(null);
 
-  if (system === 0) {
-    return <DecisionTree
-      reset={reset}
-    />;
-  } else if (system === 1) {
-    return <PawPaw
-      reset={reset}
-    />;
-  } else if (system === 2) {
-    return <ConversationalSystem
-      reset={reset}
-    />;
-  }
+  useEffect(() => {
+    if (system === 0) {
+      setDisplay(<DecisionTree />);
+    } else if (system === 1) {
+      setDisplay(<PawPaw />);
+    } else if (system === 2) {
+      setDisplay(<ConversationalSystem />);
+    } else {
+      setDisplay([
+        <h1 key="select-title">Selecteer een systeem</h1>,
+        <button key="dt-btn" onClick={() => setSystem(0)}>
+          Decision Tree
+        </button>,
+        <button key="pawpaw-btn" onClick={() => setSystem(1)}>
+          PAW-PAW
+        </button>,
+        <button key="conv-btn" onClick={() => setSystem(2)}>
+          Conversational System
+        </button>
+      ]);
+    }
+  }, [system]);
 
   return (
     <>
-      <h1>Selecteer een systeem</h1>
-      <button onClick={() => setSystem(0)}>Decision Tree</button>
-      <button onClick={() => setSystem(1)}>PAW-PAW</button>
-      <button onClick={() => setSystem(2)}>Conversational System</button>
-    </>
-  );
-}
-
-/**
- * The component that provides an interface for the Decision Tree decision
- * support system.
- */
-function DecisionTree({ reset }) {
-  return (
-    <>
-      <h2>Decision Tree</h2>
-      <button onClick={reset}>Terug naar hoofdmenu</button>
+      {display}
+      <div className='back-button'>
+        <button onClick={reset}>Terug naar hoofdmenu</button>
+      </div>
     </>
   );
 }
@@ -67,11 +73,10 @@ function DecisionTree({ reset }) {
  * The component that provides an interface for the conversational decision
  * support system.
  */
-function ConversationalSystem({ reset }) {
+function ConversationalSystem() {
   return (
     <>
       <h2>Conversational System</h2>
-      <button onClick={reset}>Terug naar hoofdmenu</button>
     </>
   );
 }

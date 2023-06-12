@@ -79,3 +79,7 @@ ol {
   text-align: left;
   max-width: 500px;
 }
+
+.back-button {
+  margin-top: 20px;
+}
