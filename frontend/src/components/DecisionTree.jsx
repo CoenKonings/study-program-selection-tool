@@ -47,7 +47,10 @@ function DecisionTree() {
               answers={currentNode.question.answer_set}
               fetchNode={fetchNode}
             />
-            : <h2>{currentNode.result}</h2>
+            : <>
+            <h2>Resultaat:</h2>
+            <p>{currentNode.result.name}</p>
+          </>
       }
     </>
   );
