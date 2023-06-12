@@ -43,6 +43,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 class NodeSerializer(serializers.ModelSerializer):
     question = QuestionSerializer(read_only=True)
+    result = StudyProgramSerializer(read_only=True)
 
     class Meta:
         model = Node
