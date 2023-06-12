@@ -25,15 +25,22 @@ function DecisionTree() {
     });
 
     // Fetch the node with the given ID and set it as currentNode.
-    const fetchNode = (id) => fetch("http://localhost:8000/nodes/" + id + "/")
-      .then(response => response.json())
-      .then(data => {
-        setCurrentNode(data);
-      });
+    const fetchNode = (id) => {
+      fetch("http://localhost:8000/nodes/" + id + "/")
+        .then(response => response.json())
+        .then(data => {
+          setCurrentNode(data);
+        });
+    };
 
     useEffect(() => {
       fetchRoot();
     }, []);
+
+    useEffect(() => {
+      console.log("DEBUG current node");
+      console.log(currentNode);
+    }, [currentNode]);
 
   return (
     <>
@@ -71,7 +78,7 @@ function Decision({ question, answers, fetchNode }) {
     }
 
     setAnswerButtons(buttons);
-  }, []);
+  }, [answers]);
 
   return (
     <>

@@ -32,6 +32,7 @@ class ScoreAdmin(admin.ModelAdmin):
 
 admin.site.register(StudyProgram, StudyProgramAdmin)
 admin.site.register(Node, NodeAdmin)
+admin.site.register(Question, QuestionAdmin)
 admin.site.register(DecisionTree, DecisionTreeAdmin)
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Criterium, CriteriumAdmin)

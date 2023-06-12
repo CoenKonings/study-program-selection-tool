@@ -62,9 +62,12 @@ function SystemSelector() {
   return (
     <>
       {display}
-      <div className='back-button'>
-        <button onClick={reset}>Terug naar hoofdmenu</button>
-      </div>
+      {
+        system !== null &&
+        <div className='back-button'>
+          <button onClick={reset}>Terug naar hoofdmenu</button>
+        </div>
+      }
     </>
   );
 }
