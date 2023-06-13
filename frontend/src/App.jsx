@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import PawPaw from './components/PawPaw.jsx';
 import DecisionTree from './components/DecisionTree.jsx';
+import ConversationalSystem from './components/ConversationalSystem.jsx';
 
 /**
  * Main App component which functions as the root of the component tree.
@@ -68,18 +69,6 @@ function SystemSelector() {
           <button onClick={reset}>Terug naar hoofdmenu</button>
         </div>
       }
-    </>
-  );
-}
-
-/**
- * The component that provides an interface for the conversational decision
- * support system.
- */
-function ConversationalSystem() {
-  return (
-    <>
-      <h2>Conversational System</h2>
     </>
   );
 }
