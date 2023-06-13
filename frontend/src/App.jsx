@@ -18,9 +18,7 @@ import ConversationalSystem from './components/ConversationalSystem.jsx';
 function App() {
   return (
     <>
-      <div>
         <SystemSelector />
-      </div>
     </>
   );
 }

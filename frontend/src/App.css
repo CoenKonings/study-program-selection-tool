@@ -1,7 +1,7 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  /* padding: 2rem; */
   text-align: center;
 }
 
@@ -86,16 +86,22 @@ ol {
 
 .chat-history {
   text-align: left;
-  width: 50vw;
+  width: 100vw;
+  margin-top: auto;
 }
 
 @media only screen and (max-width: 1300px) {
-  .chat-history {
-    width: 80vw;
+  .message {
+    padding: 20px 5vw;
   }
 }
 
 .message {
-  border-bottom: solid rgba(255,255,255,0.3) 1px;
-  padding: 5px 10px;
+  /* border-bottom: solid rgba(255,255,255,0.3) 1px; */
+  padding: 20px 10vw;
+  margin: 0;
+}
+
+.message-user {
+  background-color: #101010;
 }
