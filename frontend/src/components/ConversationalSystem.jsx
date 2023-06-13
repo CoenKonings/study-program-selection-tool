@@ -5,7 +5,10 @@ import { useState, useEffect } from 'react';
  * support system.
  */
 function ConversationalSystem() {
-  let [messages, setMessages] = useState([]);
+  let [messages, setMessages] = useState([{
+    'role': 'assistant',
+    'content': 'Hallo! Ik ben hier om je te helpen een studie te kiezen binnen de informatiewetenschappen. Wat vind je interessant?'
+  }]);
 
   // Fetch a response from the server.
   const fetchMessage = () => {
@@ -20,8 +23,8 @@ function ConversationalSystem() {
       .then(response => response.json())
       .then(data => {
         setMessages([...messages, {
-          "sender": "tool",
-          "message": data
+          "role": "assistant",
+          "content": data
         }]);
       });
   }
@@ -29,15 +32,15 @@ function ConversationalSystem() {
   // Update the state by adding the user's new message.
   const newUserMessage = (message) => {
     setMessages([...messages, {
-      "sender": "user",
-      "message": message
+      "role": "user",
+      "content": message
     }]);
   }
 
   // If messages updates, and the last message was sent by the user, fetch a
   // response from the system.
   useEffect(() => {
-    if (messages.length > 0 && messages[messages.length - 1].sender === "user") {
+    if (messages.length > 0 && messages[messages.length - 1].role === "user") {
       fetchMessage();
     }
   }, [messages]);
@@ -50,6 +53,10 @@ function ConversationalSystem() {
       />
       <MessageInput
         onEnterPress={newUserMessage}
+        disabled={
+          messages.length >= 49 || messages[messages.length - 1].role === "user"
+        }
+        reason={messages.length >= 49 ? "Maximale gesprekslengte bereikt" : "Wachten op antwoord"}
       />
     </>
   );
@@ -64,9 +71,9 @@ function ChatHistory({ messages }) {
     <div className='chat-history'>
       {messages.map((message, index) => (
         <p
-          className={"message message-" + message.sender}
+          className={"message message-" + message.role}
           key={'message-' + index}
-        >{message.message}</p>
+        >{message.content}</p>
       ))}
     </div>
   )
@@ -76,7 +83,7 @@ function ChatHistory({ messages }) {
  * A component that allows the user to type a message and press enter to send
  * it. Takes a function to call on enter press as props.
  */
-function MessageInput({ onEnterPress }) {
+function MessageInput({ onEnterPress, disabled, reason }) {
   // Handle pressing enter on the input field.
   const handleKeyPress = (event) => {
     if (event.key === "Enter" && event.target.value !== "") {
@@ -93,7 +100,8 @@ function MessageInput({ onEnterPress }) {
       type="text"
       name="msg-input"
       className="message-box"
-      placeholder="typ een bericht..."
+      placeholder={disabled ? reason : "typ een bericht..."}
+      disabled={disabled}
       onKeyUp={(e) => {handleKeyPress(e)}}
     />
   )

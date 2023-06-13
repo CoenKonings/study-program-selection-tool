@@ -15,7 +15,10 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import *
-from .helpers import pawpaw_result_validate_data_types, pawpaw
+from .helpers import pawpaw_result_validate_data_types, pawpaw, validate_conversation
+import openai
+import os
+from .prompt import GPT_PROMPT
 
 
 class DecisionTreeViewSet(viewsets.ReadOnlyModelViewSet):
@@ -79,24 +82,40 @@ class PawPawResultView(APIView):
         data = request.data
         valid, error = pawpaw_result_validate_data_types(data)
 
-        if valid:
-            success, result = pawpaw(data)
-
-            if not success:
-                return Response({"detail": result}, status.HTTP_400_BAD_REQUEST)
-
-            # Serialize the study programs to be able to send them.
-            for item in result["ranking"]:
-                serializer = StudyProgramSerializer(item["study_program"])
-                item["study_program"] = serializer.data
-            return Response(result, status=status.HTTP_200_OK)
-        else:
+        if not valid:
             return Response({"detail": error}, status=status.HTTP_400_BAD_REQUEST)
+
+        success, result = pawpaw(data)
+
+        if not success:
+            return Response({"detail": result}, status.HTTP_400_BAD_REQUEST)
+
+        # Serialize the study programs to be able to send them.
+        for item in result["ranking"]:
+            serializer = StudyProgramSerializer(item["study_program"])
+            item["study_program"] = serializer.data
+        return Response(result, status=status.HTTP_200_OK)
 
 
 class ConversationView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
-        msg = "message {}".format(len(request.data))
+        messages = request.data
+        valid, error = validate_conversation(messages)
+        if not valid:
+            return Response({"detail": error}, status=status.HTTP_400_BAD_REQUEST)
+
+        messages.insert(0, {
+            "role": "system",
+            "content": GPT_PROMPT
+        })
+        openai.api_key = os.environ["GPT_API_KEY"]
+        openai.organization = "org-wXX30QVS20bb2WaHK3Yr2vqA"
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=messages
+        )
+
+        msg = response["choices"][0]['message']['content']
         return Response(msg, status=status.HTTP_200_OK)

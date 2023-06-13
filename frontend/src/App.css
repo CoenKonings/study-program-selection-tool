@@ -1,5 +1,4 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   /* padding: 2rem; */
   text-align: center;
@@ -87,7 +86,8 @@ ol {
 .chat-history {
   text-align: left;
   width: 100vw;
-  margin-top: auto;
+  height: calc(90vh - 180px);
+  overflow: auto;
 }
 
 @media only screen and (max-width: 1300px) {
@@ -102,6 +102,13 @@ ol {
   margin: 0;
 }
 
-.message-user {
+.message-assistant {
   background-color: #101010;
+}
+
+.message-box {
+  width: 600px;
+  max-width: 85vw;
+  padding: 5px 10px;
+  margin: 10px 10px;
 }
