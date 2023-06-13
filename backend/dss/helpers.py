@@ -121,3 +121,28 @@ def pawpaw(data):
     consistency = np.abs(max_eigenvalue - len(data["criteria"])) <= 1
 
     return True, {"ranking": ranking, "consistency": consistency}
+
+
+def validate_conversation(messages):
+    """
+    Validate the data types and structures of `messages`. It should be an array
+    of dictionaries, where each dictionary contains a `role` and a `message`.
+    The final message should have `user` as value for `role`.
+    """
+    if type(messages) is not list:
+        return False, "Request body should be a list of messages."
+
+    if len(messages) > 49:
+        return False, "Maximum length of conversation exceeded."
+
+    if not all(type(m) is dict for m in messages):
+        return False, "Messages should be JSON objects."
+
+    # Check if each message contains a role and a content.
+    if not all("role" in m.keys() and "content" in m.keys() for m in messages):
+        return False, "Each message should contain 'content' and 'role' keys."
+
+    if not all(m["role"] == "user" or m["role"] == "assistant" for m in messages):
+        return False, "All messages' roles should be 'user' or 'assistant'."
+
+    return True, None

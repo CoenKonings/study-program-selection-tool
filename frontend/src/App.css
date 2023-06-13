@@ -1,7 +1,6 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  /* padding: 2rem; */
   text-align: center;
 }
 
@@ -82,4 +81,34 @@ ol {
 
 .back-button {
   margin-top: 20px;
+}
+
+.chat-history {
+  text-align: left;
+  width: 100vw;
+  height: calc(90vh - 180px);
+  overflow: auto;
+}
+
+@media only screen and (max-width: 1300px) {
+  .message {
+    padding: 20px 5vw;
+  }
+}
+
+.message {
+  /* border-bottom: solid rgba(255,255,255,0.3) 1px; */
+  padding: 20px 10vw;
+  margin: 0;
+}
+
+.message-assistant {
+  background-color: #101010;
+}
+
+.message-box {
+  width: 600px;
+  max-width: 85vw;
+  padding: 5px 10px;
+  margin: 10px 10px;
 }
