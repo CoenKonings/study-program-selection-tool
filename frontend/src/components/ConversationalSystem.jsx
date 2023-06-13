@@ -9,10 +9,21 @@ function ConversationalSystem() {
 
   // Fetch a response from the server.
   const fetchMessage = () => {
-    setMessages([...messages, {
-      "sender": "tool",
-      "message": "bericht" + messages.length
-    }]);
+    fetch('http://localhost:8000/conversation/', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(messages)
+    })
+      .then(response => response.json())
+      .then(data => {
+        setMessages([...messages, {
+          "sender": "tool",
+          "message": data
+        }]);
+      });
   }
 
   // Update the state by adding the user's new message.

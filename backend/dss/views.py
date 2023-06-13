@@ -92,3 +92,11 @@ class PawPawResultView(APIView):
             return Response(result, status=status.HTTP_200_OK)
         else:
             return Response({"detail": error}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ConversationView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        msg = "message {}".format(len(request.data))
+        return Response(msg, status=status.HTTP_200_OK)

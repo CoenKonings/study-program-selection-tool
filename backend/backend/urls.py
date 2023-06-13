@@ -25,4 +25,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include(router.urls)),
     path("pawpaw-result/", views.PawPawResultView.as_view()),
+    path("conversation/", views.ConversationView.as_view()),
 ]
