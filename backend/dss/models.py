@@ -58,6 +58,9 @@ class Question(models.Model):
 
     text = models.CharField(max_length=255)
 
+    def __str__(self):
+        return "Question {}: {}".format(self.id, self.text)
+
 
 class Node(models.Model):
     """
