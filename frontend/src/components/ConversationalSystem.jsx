@@ -21,7 +21,7 @@ function ConversationalSystem() {
 
   // Fetch a response from the server.
   const fetchMessage = () => {
-    fetch('http://localhost:8000/conversation/', {
+    fetch(`${import.meta.env.VITE_API_URL}conversation/`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

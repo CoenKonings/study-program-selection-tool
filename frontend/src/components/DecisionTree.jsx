@@ -18,7 +18,7 @@ function DecisionTree() {
 
   // Fetch the root of the first decision tree. There should only be one
   // decision tree in the back-end.
-  const fetchRoot = () => fetch("http://localhost:8000/decision-trees/")
+  const fetchRoot = () => fetch(`${import.meta.env.VITE_API_URL}decision-trees/`)
     .then(response => response.json())
     .then(data => {
       fetchNode(data[0].root);
@@ -26,7 +26,7 @@ function DecisionTree() {
 
     // Fetch the node with the given ID and set it as currentNode.
     const fetchNode = (id) => {
-      fetch("http://localhost:8000/nodes/" + id + "/")
+      fetch(`${import.meta.env.VITE_API_URL}nodes/${id}/`)
         .then(response => response.json())
         .then(data => {
           setCurrentNode(data);

@@ -24,8 +24,8 @@ function PawPaw() {
   // A boolean that tracks whether all comparisons are done.
   let [comparisonsDone, setComparisonsDone] = useState(false);
 
-  // Function to get all criteria from the back-end. TODO: URL in env.
-  const fetchCriteria = () => fetch("http://localhost:8000/criteria/")
+  // Function to get all criteria from the back-end.
+  const fetchCriteria = () => fetch(`${import.meta.env.VITE_API_URL}criteria/`)
     .then(response => {
       return response.json();
     })
@@ -295,7 +295,7 @@ function Result({ comparisons, criteria }) {
 
   const fetchResult = () => {
     const criteriaIDs = criteria.map(criterium => criterium.id);
-    fetch('http://localhost:8000/pawpaw-result/', {
+    fetch(`${import.meta.env.VITE_API_URL}pawpaw-result/`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
