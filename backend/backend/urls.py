@@ -1,9 +1,9 @@
 """
 Author:         Coen Konings
 Student nr:     11283394
-Date:           May 29th, 2023
+Date:           May 29, 2023
 
-Last edited:    June 3rd, 2023
+Last edited:    June 14, 2023
 By:             Coen Konings
 
 urls.py:

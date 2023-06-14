@@ -1,3 +1,12 @@
+/**
+ * Author:      Coen Konings
+ * Student nr:  11283394
+ * Date:        June 13, 2023
+ *
+ * Edited:      June 14, 2023
+ * By:          Coen Konings
+ */
+
 import { useState, useEffect } from 'react';
 
 /**
@@ -56,7 +65,9 @@ function ConversationalSystem() {
         disabled={
           messages.length >= 49 || messages[messages.length - 1].role === "user"
         }
-        reason={messages.length >= 49 ? "Maximale gesprekslengte bereikt" : "Wachten op antwoord"}
+        reason={messages.length >= 49
+          ? "Maximale gesprekslengte bereikt"
+          : "Wachten op antwoord"}
       />
     </>
   );
