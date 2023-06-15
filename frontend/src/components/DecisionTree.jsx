@@ -37,11 +37,6 @@ function DecisionTree() {
       fetchRoot();
     }, []);
 
-    useEffect(() => {
-      console.log("DEBUG current node");
-      console.log(currentNode);
-    }, [currentNode]);
-
   return (
     <>
       <h1>Decision Tree</h1>

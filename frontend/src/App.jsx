@@ -93,10 +93,6 @@ function SystemSelector() {
     }
   }, [system]);
 
-  useEffect(() => {
-    console.log(time);
-  }, [time]);
-
   return (
     <>
       {display}

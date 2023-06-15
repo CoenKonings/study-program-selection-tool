@@ -170,10 +170,6 @@ function Comparison({ criteria, currentComparison, comparisons, setComparisons, 
   const criterium2 = criteria[currentComparison[1]];
   let relativeImportanceSelector = [];
 
-  useEffect(() => {
-    console.log(criteria);
-  }, []);
-
   for (let i = 1; i < 9; i++) {
     // Generate the radio buttons for evaluation of relative importance.
     relativeImportanceSelector.push(<label key={"relative-importance-" + i}>
@@ -313,7 +309,6 @@ function Result({ comparisons, criteria }) {
       .then(response => response.json())
       .then(data => {
         setResult(data);
-        console.log(data.consistency);
       });
   };
 
