@@ -56,6 +56,10 @@ function SystemSelector() {
     setTime(0);
   }
 
+  window.onbeforeunload = () => {
+    reset();
+    return null;
+  };
 
   useEffect(() => {
     let intervalId;

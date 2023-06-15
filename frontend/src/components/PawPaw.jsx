@@ -149,7 +149,7 @@ function CriteriaSelector({ criteria, setSelectedCriteria }) {
               id={"criterium-" + criterium.id + "-select"}
               onChange={(e) => handleCheck(e, criterium)}
             />
-            {criterium.description}
+            {criterium.short_description}
           </label>
         ))}
         <button type="submit" disabled={checkedCriteria.length <= 1}>Verder</button>
