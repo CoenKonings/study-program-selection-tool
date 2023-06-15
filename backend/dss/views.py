@@ -119,3 +119,16 @@ class ConversationView(APIView):
 
         msg = response["choices"][0]['message']['content']
         return Response(msg, status=status.HTTP_200_OK)
+
+
+class TimerView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        serializer = TimerSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response({"detail": "Invalid timer"}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer.save()
+        return Response("Succes!", status=status.HTTP_200_OK)

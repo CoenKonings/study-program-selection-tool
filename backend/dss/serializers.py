@@ -54,3 +54,9 @@ class CriteriumSerializer(serializers.ModelSerializer):
     class Meta:
         model = Criterium
         fields = ["id", "description", "short_description"]
+
+
+class TimerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Timer
+        fields = ["system", "time"]

@@ -33,9 +33,44 @@ function SystemSelector() {
   // component.
   let [system, setSystem] = useState(null);
   let [display, setDisplay] = useState(null);
-  const reset = () => setSystem(null);
+  let [time, setTime] = useState(0);
+  let [isRunning, setIsRunning] = useState(false);
+
+  // Return the user to the menu by setting the selected system to null.
+  // Stop the timer if it was started. Send the recorded time to the back-end.
+  const reset = () => {
+    fetch(`${import.meta.env.VITE_API_URL}timer/`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "system": system,
+        "time": time
+      })
+    });
+
+    setSystem(null);
+    setIsRunning(false);
+    setTime(0);
+  }
+
 
   useEffect(() => {
+    let intervalId;
+    if (isRunning) {
+      intervalId = setInterval(() => setTime(time + 0.1), 100)
+    }
+    return () => clearInterval(intervalId);
+
+  }, [isRunning, time])
+
+  useEffect(() => {
+    if (system !== null) {
+      setIsRunning(true);
+    }
+
     if (system === 0) {
       setDisplay(<DecisionTree />);
     } else if (system === 1) {
@@ -57,6 +92,10 @@ function SystemSelector() {
       ]);
     }
   }, [system]);
+
+  useEffect(() => {
+    console.log(time);
+  }, [time]);
 
   return (
     <>

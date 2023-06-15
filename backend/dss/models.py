@@ -112,3 +112,11 @@ class Answer(models.Model):
         return '"{}" as answer to "{}", leading to "{}".'.format(
             self.text, self.question, self.leads_to
         )
+
+
+class Timer(models.Model):
+    """
+    Allows tracking the time spent by the user.
+    """
+    system = models.IntegerField()
+    time = models.FloatField()

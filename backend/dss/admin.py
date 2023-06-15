@@ -30,6 +30,10 @@ class ScoreAdmin(admin.ModelAdmin):
     list_display = ["criterium", "study_program", "value"]
 
 
+class TimerAdmin(admin.ModelAdmin):
+    list_display = ["system", "time"]
+
+
 admin.site.register(StudyProgram, StudyProgramAdmin)
 admin.site.register(Node, NodeAdmin)
 admin.site.register(Question, QuestionAdmin)
@@ -37,3 +41,4 @@ admin.site.register(DecisionTree, DecisionTreeAdmin)
 admin.site.register(Answer, AnswerAdmin)
 admin.site.register(Criterium, CriteriumAdmin)
 admin.site.register(Score, ScoreAdmin)
+admin.site.register(Timer, TimerAdmin)

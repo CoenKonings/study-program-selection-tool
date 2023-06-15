@@ -106,6 +106,12 @@ ol {
   background-color: #101010;
 }
 
+@media (prefers-color-scheme: light) {
+  .message-assistant{
+    background-color: #fafafa;
+  }
+}
+
 .message-box {
   width: 600px;
   max-width: 85vw;
