@@ -53,4 +53,4 @@ class NodeSerializer(serializers.ModelSerializer):
 class CriteriumSerializer(serializers.ModelSerializer):
     class Meta:
         model = Criterium
-        fields = ["id", "description"]
+        fields = ["id", "description", "short_description"]

@@ -29,6 +29,7 @@ class Criterium(models.Model):
     """
 
     description = models.CharField(max_length=255)
+    short_description = models.CharField(max_length=64)
 
     def __str__(self):
         return "Criterium {}: {}".format(self.id, self.description)

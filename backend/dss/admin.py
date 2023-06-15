@@ -23,7 +23,7 @@ class AnswerAdmin(admin.ModelAdmin):
 
 
 class CriteriumAdmin(admin.ModelAdmin):
-    list_display = ["id", "description"]
+    list_display = ["id", "description", "short_description"]
 
 
 class ScoreAdmin(admin.ModelAdmin):
