@@ -1,4 +1,9 @@
-dss_env/*
+# Added manually
+*/.dss_env/*
+.env
+*.zip
+
+# Generated using gitignore.io
 
 # Created by https://www.toptal.com/developers/gitignore/api/django,react
 # Edit at https://www.toptal.com/developers/gitignore?templates=django,react
@@ -189,7 +194,3 @@ thumb
 sketch
 
 # End of https://www.toptal.com/developers/gitignore/api/django,react
-
-
-.env
-*.zip

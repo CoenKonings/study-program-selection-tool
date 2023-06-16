@@ -131,4 +131,4 @@ class TimerView(APIView):
             return Response({"detail": "Invalid timer"}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer.save()
-        return Response("Succes!", status=status.HTTP_200_OK)
+        return Response("Successfully added timer: {}s".format(request.data["time"]), status=status.HTTP_200_OK)
