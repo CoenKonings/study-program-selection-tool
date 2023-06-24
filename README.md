@@ -14,7 +14,7 @@ The frontend of this project is built using Vite and React. To set up, navigate 
 ## Backend
 This guide assumes familiarity with both Django and the Django Rest Framework. Most of the work done on this project should be self-explanatory if these frameworks are known.
 
-In the backend folder you will find two more folders, another folder called `backend` (this is the folder that contains `settings.py`, `urls.py`, etc.) and a folder called `dss`. The bulk of the backend of this application is located in the `dss` folder. This folder contains the models for the decision tree and AHP-based decision support systems (located in `models.py`). Here, you will also find the admin forms for these models (`admin.py`), and the serializers (`serializers.py`) used to generate the JSON that will be returned by the views (`views.py`).
+In the backend folder you will find two more folders: another folder called `backend` (this is the folder that contains `settings.py`, `urls.py`, etc.) and a folder called `dss`. The bulk of the backend of this application is located in the `dss` folder. This folder contains the models for the decision tree and AHP-based decision support systems (located in `models.py`). Here, you will also find the admin forms for these models (`admin.py`), and the serializers (`serializers.py`) used to generate the JSON that will be returned by the views (`views.py`).
 
 ### Endpoints
 `/decision-trees/`: Used to retrieve all decision trees.
@@ -35,3 +35,17 @@ In the backend folder you will find two more folders, another folder called `bac
 
 ## Frontend
 The frontend can be found in `/frontend/` and is built entirely in React JS. The main `App` component and its child component that allows the user to select one of the three implemented decision making methods, `SystemSelector`, are located in `/frontend/src/App.jsx`. The components necessary for each of the three decision making methods are located in the respective files in `/frontend/src/components/`.
+
+## Environment variables
+Both the frontend and the backend require environment variables to be present in a `.env` file at the project's root. Here, three environment variables should be present:
+
+`GPT_API_KEY` should contain the key for OpenAI's API.
+
+`DJANGO_SECRET_KEY` should contain the secret key to be used in `settings.py`.
+
+`VITE_API_URL` should contain the URL from which the backend can be reached.
+
+# Deployment
+The backend can be deployed following the standard Django deployment procedure ([docs](https://docs.djangoproject.com/en/4.2/howto/deployment/)).
+
+The frontend can be built by running `npm run build`. All that is left to do is serving the application files that appear in the `dist` folder with `index.html` as an entry point.
