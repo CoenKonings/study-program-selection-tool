@@ -49,3 +49,6 @@ Both the frontend and the backend require environment variables to be present in
 The backend can be deployed following the standard Django deployment procedure ([docs](https://docs.djangoproject.com/en/4.2/howto/deployment/)).
 
 The frontend can be built by running `npm run build`. All that is left to do is serving the application files that appear in the `dist` folder with `index.html` as an entry point.
+
+# TODO
+- The frontend could use a refactor, especially the components for PAW-PAW and the decision tree.
