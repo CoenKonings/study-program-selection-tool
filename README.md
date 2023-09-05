@@ -1,5 +1,5 @@
 # Study program selection tool
-This repository contains a prototype of a study program selection tool. The tool consists of two elements: the backend, a Django project with the default SQLite database, and the front end, which is created using React JS.
+This repository contains a prototype of a study program selection tool that I wrote for my bachelor thesis for BSc Computing Science at University of Amsterdam. The tool consists of two elements: the backend, a Django project with the default SQLite database, and the front end, which is created using React JS.
 
 # Usage
 ## Backend
